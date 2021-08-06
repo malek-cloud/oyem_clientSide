@@ -23,18 +23,19 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider.value(value: EmployeeProv()),
         ChangeNotifierProvider.value(value: ClientProv()),
       ],
-      child: GetMaterialApp(
-        title: 'Client Side',
-        theme: ThemeData(
-          primaryColor: Colors.grey[800],
-          accentColor: Colors.green,
+      child:  GetMaterialApp(
+          title: 'Client Side',
+          theme: ThemeData(
+            primaryColor: Colors.grey[800],
+            accentColor: Colors.green,
+          ),
+          home: Load(),
+          debugShowCheckedModeBanner: false,
+          /* routes: {
+            ProfileEmp.routeName : (ctx) => ProfileEmp() ,
+          },*/
         ),
-        home: Load(),
-        debugShowCheckedModeBanner: false,
-        /* routes: {
-          ProfileEmp.routeName : (ctx) => ProfileEmp() ,
-        },*/
-      ),
+      
     );
   }
 }

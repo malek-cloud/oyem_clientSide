@@ -16,7 +16,7 @@ class OneGrid extends StatelessWidget {
                           children: [
                             icon,
                             SizedBox(
-                              height: 15,
+                              height: 10,
                             ),
                             Text(title, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[800], fontSize: 17), textAlign: TextAlign.center,),
                             

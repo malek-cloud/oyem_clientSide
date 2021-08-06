@@ -1,5 +1,7 @@
 //import'../widgets/bottomNavBar.dart';
+import 'package:admin_psy/screens/firstScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/drawer.dart';
 import '../widgets/detailedArticle.dart';
@@ -19,41 +21,46 @@ class _AccueilState extends State<Accueil> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      //bottomNavigationBar: SnackBar(content: content),
-      appBar: AppBar(
-        title: Text(
-          'Oyem',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        elevation: 0,
-        backgroundColor: Theme.of(context).accentColor,
-        actions: [
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.notifications_active),
-                tooltip: 'View Notifications',
-                onPressed: () {
-                  // handle the press
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.search),
-                tooltip: 'Search for something',
-                onPressed: () {
-                  // handle the press
-                },
-              ),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(onPressed: (){
+          Get.to(FirstScreen());
+        }),
+        //bottomNavigationBar: SnackBar(content: content),
+        appBar: AppBar(
+          title: Text(
+            'Oyem',
+            style: TextStyle(fontWeight: FontWeight.w600),
           ),
-        ],
+          elevation: 0,
+          backgroundColor: Theme.of(context).accentColor,
+          actions: [
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.notifications_active),
+                  tooltip: 'View Notifications',
+                  onPressed: () {
+                    // handle the press
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  tooltip: 'Search for something',
+                  onPressed: () {
+                    // handle the press
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+        // bottomNavigationBar: BottomBarNavv(),
+        drawer: MyDrawer(),
+    
+        backgroundColor: Theme.of(context).accentColor,
+        body: ListingArticles(),
       ),
-      // bottomNavigationBar: BottomBarNavv(),
-      drawer: MyDrawer(),
-
-      backgroundColor: Theme.of(context).accentColor,
-      body: ListingArticles(),
     );
   }
 }
@@ -96,7 +103,7 @@ class _ListingArticlesState extends State<ListingArticles> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
+              child: ListView.builder( 
                 itemCount: art.length,
                 itemBuilder: (context, i) {
                   return ListItem(

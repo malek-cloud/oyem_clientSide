@@ -2,68 +2,10 @@ import 'package:admin_psy/models/client.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../conf.dart';
+
 class ClientProv with ChangeNotifier {
-  List<Client> _client = [
-    /*Client(
-      age: 23,
-      prenom: 'Hasna',
-      parrainage: true,
-      id: '1',
-      nom: 'boufahja',
-      idCoach: '1',
-      credit: 45,
-      gacaoch: 0,
-      gacummul: 6,
-      gaparrainage: 10,
-      gaweek: 7,
-      numTelephone: '58447154',
-      email: 'hasnaboufahga@gmail.com',
-    ),
-    Client(
-      age: 23,
-      prenom: 'Foued',
-      parrainage: true,
-      id: '2',
-      nom: 'Hafnaoui',
-      idCoach: '1',
-      credit: 2,
-      gacaoch: 14,
-      gacummul: 0,
-      gaparrainage: 10,
-      gaweek: 7,
-      numTelephone: '98547164',
-      email: 'FouedHafnaoui@gmail.com',
-    ),
-    Client(
-      age: 23,
-      prenom: 'SeifEddine',
-      parrainage: true,
-      id: '0',
-      nom: 'Bakkouri',
-      idCoach: '',
-      credit: 82,
-      gacaoch: 4,
-      gacummul: 20,
-      gaparrainage:  0,
-      gaweek: 7,
-      numTelephone: '98547164',
-      email: 'FouedHafnaoui@gmail.com',
-    ),Client(
-      age: 23,
-      prenom: 'Souhail',
-      parrainage: true,
-      id: '3',
-      nom: 'Jaballah',
-      idCoach: '3',
-      credit: 78,
-      gacaoch: 8,
-      gacummul: 24,
-      gaparrainage: 0,
-      gaweek: 7,
-      numTelephone: '25787164',
-      email: 'JaballahSouhail@gmail.com',
-    ),*/
-  ];
+  
   String id = '-1';
   String incrementId() {
     id = (int.parse(id) + 1).toString();
@@ -79,14 +21,16 @@ class ClientProv with ChangeNotifier {
   ) {
     String myId;
     myId = incrementId();
-    _client.add(
+    client.add(
       new Client(
           id: myId,
           email: email,
           nom: nom,
           prenom: prenom,
           numTelephone: phone,
-          password: password),
+          password: password,
+          favArticles : []),
+          
     );
 
     notifyListeners();
@@ -94,7 +38,7 @@ class ClientProv with ChangeNotifier {
   }
 
   List<Client> get getData {
-    return [..._client];
+    return client;
   }
 
   bool exist(String email, String password) {
@@ -112,17 +56,25 @@ class ClientProv with ChangeNotifier {
     String id ;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     final String email = sharedPreferences.getString('email');
+    print("hedha email : "+ email != null);
     if (email != null) {
       int i;
-      for (i = 0; i < getData.length; i++) {
-        if (getData[i].getEmail == email) {
-           print("hiiii");
-          id = getData[i].id;
+      print(client);
+      print(client.length.toString());
+      
+      for (i = 0; i < client.length; i++) {
+        print("hedha email 2 : "+ client[i].getEmail +" ==="+email);
+        if (client[i].getEmail == email) {
+           print("hiiii 2");
+          id = client[i].id;
 
         }
       }
     } 
      return id;
   }
+  Client findById(String id){
+  return client.firstWhere((user) => user.id == id );
+}
  
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b129871a-e3bd-41c4-9890-bbd5988c29f9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/admin_psy/lib/models/client.dart" beforeDir="false" afterPath="$PROJECT_DIR$/admin_psy/lib/models/client.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_psy/lib/providers/article.dart" beforeDir="false" afterPath="$PROJECT_DIR$/admin_psy/lib/providers/article.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_psy/lib/providers/clientProv.dart" beforeDir="false" afterPath="$PROJECT_DIR$/admin_psy/lib/providers/clientProv.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_psy/lib/screens/inscri.dart" beforeDir="false" afterPath="$PROJECT_DIR$/admin_psy/lib/screens/inscri.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin_psy/lib/widgets/detailedArticle.dart" beforeDir="false" afterPath="$PROJECT_DIR$/admin_psy/lib/widgets/detailedArticle.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1wIpOh1nbjcru8Av1bu0iYfiIG2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/admin_psy" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b129871a-e3bd-41c4-9890-bbd5988c29f9" name="Default Changelist" comment="" />
+      <created>1628155926205</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1628155926205</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1628156018939">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1628156018939" />
+  </component>
+</project>

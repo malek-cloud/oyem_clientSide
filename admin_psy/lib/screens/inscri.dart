@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
+import '../conf.dart';
+
 class Inscri extends StatefulWidget {
   @override
   _InscriState createState() => _InscriState();
@@ -19,7 +21,7 @@ class _InscriState extends State<Inscri> {
   FocusNode f5 = FocusNode();
   FocusNode f6 = FocusNode();
   FocusNode f7 = FocusNode();
-
+  String myId ;
   bool _checkcondition = false;
   bool _checkOffre = false;
   String _nom, _prenom, _email, _phone;
@@ -409,30 +411,28 @@ class _InscriState extends State<Inscri> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_formkey.currentState.validate()) {
-                        clients.newClient(
+                        myId = clients.newClient(
                           _nom1.text,
                           _prenom1.text,
                           _email1.text,
                           _password.text,
                           _phone1.text,
                         );
-                        
+                        print('this is myId : ' + myId.toString());
+                        print(client.toString());
                         final SharedPreferences sharedPreferences =
                             await SharedPreferences.getInstance();
                         sharedPreferences.setString('email', _email1.text);
+                        sharedPreferences.setString('myId', myId);
                         sharedPreferences.setString('password', _password.text);
                         sharedPreferences.setString('prenom', _prenom1.text);
                         sharedPreferences.setString('nom', _nom1.text);
                         sharedPreferences.setString('phone', _phone1.text);
-                       /* print(sharedPreferences.getString('email'));
-                        print(sharedPreferences.getString('password'));
-                        print(sharedPreferences.getString('nom'));
-                        print(sharedPreferences.getString('password'));
-                        print(sharedPreferences.getString('phone'));*/
                         int i ;
                         for (i = 0;i<clients.getData.length ;i++){
                           
                           print(clients.getData[i].email);
+                          print(clients.getData[i].id);
                           print(clients.getData[i].password);
                           print(clients.getData[i].nom);
                           print(clients.getData[i].prenom);

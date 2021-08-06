@@ -1,17 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:admin_psy/providers/article.dart';
+import 'package:admin_psy/providers/articleProv.dart';
+import 'package:admin_psy/screens/favArticle.dart';
 import 'package:admin_psy/widgets/changeCoach.dart';
+import 'package:admin_psy/widgets/detailedArticle.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-
+import 'package:provider/provider.dart';
+import '../models/client.dart';
 import 'package:admin_psy/screens/message.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../conf.dart';
 import '../widgets/gotoaccueil.dart';
 import '../widgets/drawer.dart';
 import '../models/paymentCard.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class MyProfile extends StatefulWidget {
+  String id;
+  MyProfile(this.id);
   @override
   _MyProfileState createState() => _MyProfileState();
 }
@@ -40,6 +50,46 @@ class _MyProfileState extends State<MyProfile> {
     f1.dispose();
     super.dispose();
   }
+
+  XFile image;
+
+  Client currentClient(String id) {
+    Client myClient = Client();
+    client.forEach((element) {
+      if (element.id == id) {
+        myClient = element;
+      }
+    });
+
+    return myClient;
+  }
+
+  @override
+  void initState() {
+    if (widget.id != null && widget.id != '-1') {
+      print(widget.id.toString() + ' :  hedha el id mte3i');
+      
+    }
+    super.initState();
+  }
+
+  bool favArticles = false;
+  void seeFavArticles() {
+    setState(() {
+      favArticles = !favArticles;
+    });
+  }
+
+  Future getImage() async {
+    final ImagePicker _picker = ImagePicker();
+    final _image =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      image = _image;
+    });
+    currentClient(widget.id).photo = image.path ;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +99,7 @@ class _MyProfileState extends State<MyProfile> {
         backgroundColor: Theme.of(context).accentColor,
         title: Center(
             child: Text(
-          'client name',
+          currentClient(widget.id).prenom + ' ' + currentClient(widget.id).nom,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 23),
         )),
@@ -64,15 +114,30 @@ class _MyProfileState extends State<MyProfile> {
           Container(
             height: MediaQuery.of(context).size.height * 0.2,
             child: Center(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(200),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.18,
-                  width: MediaQuery.of(context).size.height * 0.18,
-                  child: Image.network(
-                      'http://img.over-blog-kiwi.com/1/81/49/18/20151027/ob_aee1cb_avril-lavigne-avril-lavigne-22661429-1.jpg',
-                      fit: BoxFit.cover),
-                ),
+              child: Stack(
+                alignment: AlignmentDirectional.bottomEnd,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.18,
+                    width: MediaQuery.of(context).size.height * 0.18,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      backgroundImage: image == null
+                          ? AssetImage('assets/unknown.png')
+                          : FileImage(File(currentClient(widget.id).photo)),
+                    ),
+                  ),
+                  FloatingActionButton(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    mini: true,
+                    onPressed: () {
+                      getImage();
+                    },
+                    child: Icon(
+                      Icons.photo_camera,
+                    ),
+                  )
+                ],
               ),
             ),
           ),
@@ -186,28 +251,98 @@ class _MyProfileState extends State<MyProfile> {
                     height: 15,
                   ),
                   Divider(),
-                  ClipRRect(
+                  /*   ClipRRect(
                     borderRadius: BorderRadius.circular(25),
                     child: Container(
                       padding: EdgeInsets.only(left: 10),
                       color: Colors.grey[50],
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Vos Articles Préférés :',
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ],
+                        children: [*/
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Vos Articles Préférés :',
+                        style: TextStyle(fontSize: 20),
                       ),
-                    ),
+                      IconButton(
+                          onPressed: () {
+                            seeFavArticles();
+                          },
+                          icon: Icon(
+                            favArticles
+                                ? Icons.arrow_drop_up
+                                : Icons.arrow_drop_down,
+                            size: 35,
+                          ))
+                    ],
                   ),
+                  favArticles
+                      ? ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: EdgeInsets.symmetric(horizontal: 30),
+                          shrinkWrap: true,
+                          itemCount:
+                              currentClient(widget.id).favArticles.length,
+                          itemBuilder: (context, i) {
+                            Article art = Provider.of<ArticleProv>(context)
+                                .findById(
+                                    currentClient(widget.id).favArticles[i]);
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(Favorite(
+                                  id: art.id,
+                                ));
+                                print('work');
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).accentColor,
+                                    borderRadius: BorderRadius.circular(20)),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 8),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 7),
+                                    Text(
+                                      art.titre,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Text(
+                                      'écrit par : ' +
+                                          art.autheur.nom +
+                                          ' ' +
+                                          art.autheur.prenom,
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 17,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Container(),
                 ],
               ),
             ),
           ),
         ],
       ),
+      /*   ),
+          ),
+        ],
+      ),*/
     );
   }
 
@@ -370,7 +505,7 @@ class _MyProfileState extends State<MyProfile> {
                     (int.parse(credit) + int.parse(_points.text)).toString();
                 _points.text = '';
               });
-              Get.offAll(MyProfile());
+              Get.offAll(MyProfile(widget.id));
               _showSnackBar();
             }
           } else {
@@ -381,13 +516,14 @@ class _MyProfileState extends State<MyProfile> {
     }
   }
 }
+
 _showSnackBar() {
-    Get.snackbar(
-      'Payment effectué avec Succés',
-      'le nombre de vos credit à été bien mis à jour',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.grey[300],
-      snackStyle: SnackStyle.FLOATING,
-      duration: Duration(seconds: 4),
-    );
-  }
+  Get.snackbar(
+    'Payment effectué avec Succés',
+    'le nombre de vos credit à été bien mis à jour',
+    snackPosition: SnackPosition.BOTTOM,
+    backgroundColor: Colors.grey[300],
+    snackStyle: SnackStyle.FLOATING,
+    duration: Duration(seconds: 4),
+  );
+}

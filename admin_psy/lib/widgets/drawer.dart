@@ -1,11 +1,12 @@
-import 'package:admin_psy/providers/clientProv.dart';
+import 'dart:io';
+import 'package:admin_psy/models/client.dart';
 import 'package:admin_psy/screens/QuiSommeNous.dart';
 import 'package:admin_psy/screens/feedBack.dart';
 import 'package:admin_psy/screens/myProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../conf.dart';
 import 'oneGrid.dart';
 import '../screens/firstScreen.dart';
 
@@ -15,21 +16,32 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  String _prenom;
-  String _nom;
+ 
   bool isSignIn = false;
-  Future<Null> _getUserName() async {
+  String id;
+  _getUserName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    final String email = sharedPreferences.getString('email');
+    final String _id = sharedPreferences.getString('myId');
+    id = _id;
 
-    if (email != null) {
+    if (id != null) {
       print('hello hello');
       setState(() {
-        _nom = sharedPreferences.getString('nom');
-        _prenom = sharedPreferences.getString('prenom');
+      //  _nom = sharedPreferences.getString('nom');
+       // _prenom = sharedPreferences.getString('prenom');
         isSignIn = true;
       });
     }
+  }
+
+    Client currentClient(String id) {
+    Client myClient = Client();
+    client.forEach((element) {
+      if (element.id == id) {
+        myClient = element;
+      }
+    });
+    return myClient;
   }
 
   @override
@@ -38,17 +50,18 @@ class _MyDrawerState extends State<MyDrawer> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-   
     return SafeArea(
       child: Drawer(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 25.0),
+              padding: const EdgeInsets.only(top: 15.0),
               child: GestureDetector(
-                onTap: () => Get.off(MyProfile()),
+                onTap: () => Get.off(MyProfile(id)),
                 child: Container(
                     color: Colors.white,
                     width: MediaQuery.of(context).size.width,
@@ -58,21 +71,23 @@ class _MyDrawerState extends State<MyDrawer> {
                             height: MediaQuery.of(context).size.height * 0.16,
                             child: Image.asset('assets/couverture.png',
                                 fit: BoxFit.fill)),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                              height: MediaQuery.of(context).size.height * 0.1,
-                              child: isSignIn
-                                  ? Image.network(
-                                      'http://img.over-blog-kiwi.com/1/81/49/18/20151027/ob_aee1cb_avril-lavigne-avril-lavigne-22661429-1.jpg',
-                                      fit: BoxFit.cover)
-                                  : Container()),
-                        ),
+                        SizedBox(
+                              height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                  width:
+                                      MediaQuery.of(context).size.height * 0.2,
+                              child: CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                backgroundImage:  id == null || currentClient(id).photo == null
+                                      ? AssetImage('assets/unknown.png')
+                                      : FileImage(File(currentClient(id).photo)),
+                              ),
+                            ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: (isSignIn
                               ? Text(
-                                  _prenom + " " + _nom,
+                                  currentClient(id).prenom + " " + currentClient(id).nom,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 25,
@@ -96,8 +111,8 @@ class _MyDrawerState extends State<MyDrawer> {
                 color: Colors.white,
                 child: GridView.count(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 23,
-                  mainAxisSpacing: 23,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
                   children: [
                     GestureDetector(
                       child: OneGrid(
@@ -161,6 +176,7 @@ class _MyDrawerState extends State<MyDrawer> {
                             await SharedPreferences.getInstance();
                         sharedPreferences.remove('email');
                         sharedPreferences.remove('password');
+                        sharedPreferences.remove('myId');
                         Get.off(FirstScreen());
                       },
                       child: OneGrid(

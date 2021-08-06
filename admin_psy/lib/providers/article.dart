@@ -13,14 +13,15 @@ class Article with ChangeNotifier {
 //  bool like = false ;
   final DateTime datePublication;
   final Employee autheur;
- // bool favourite;
-  Map<String, String> likes = {};
+  // bool favourite;
+
   Map<Object, Object> commentaire = {};
   List partage;
-  Map<String, String> ajoutFav = {};
+  //Map<String, String> ajoutFav = {};
+  final List<String> likes;
 
   Article({
-   // this.like,
+    this.likes,
     @required this.id,
     @required this.titre,
     @required this.contenu,
@@ -28,37 +29,33 @@ class Article with ChangeNotifier {
     this.image,
     @required this.datePublication,
     @required this.autheur,
-    this.ajoutFav,
+    //this.ajoutFav,
     this.commentaire,
-   // this.favourite,
-    this.likes,
+    // this.favourite,
+
     this.partage,
   });
 
-  void aimer(Client client) {
-    if (this.likes.containsKey(client.id)) {
-      this.likes.remove(client.id);
-    //  this.like = false ;
+  bool aimer(String id) {
+    print(this.likes.contains(id));
+    if (this.likes.contains(id)) {
+      this.likes.remove(id);
+      notifyListeners();
+      return false;
     } else {
-      this.likes[client.id] = client.prenom + client.nom;
-     // this.like = true ;
+      this.likes.add(id);
+      notifyListeners();
+
+      return true;
     }
-    notifyListeners();
   }
-  
-  void commenter(Client client, Commentaire commentaire){
-    this.commentaire[client]=[commentaire];
+
+  void commenter(Client client, Commentaire commentaire) {
+    this.commentaire[client] = [commentaire];
     notifyListeners();
   }
 
-  void ajouterFavoris(Client client){
-    if (this.ajoutFav.containsKey(client.id)) {
-      this.ajoutFav.remove(client.id);
-    } else {
-      this.ajoutFav[client.id] = client.prenom + client.nom;
-    }
-    notifyListeners();
-  }
+ 
 
   /*Future<void> share(dynamic link, String title) async{
     await FlutterShare.share(
@@ -68,6 +65,5 @@ class Article with ChangeNotifier {
       chooserTitle: 'Ou voulez vous partager ce lien'
     );
   }*/
-
 
 }
